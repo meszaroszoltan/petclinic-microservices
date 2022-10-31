@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <spring-boot.build-image.imageName>${REPOSITORY_PREFIX}/spring-petclinic-cloud-config-server</spring-boot.build-image.imageName>
+        <spring-boot.build-image.imageName>spring-petclinic-cloud-config-server</spring-boot.build-image.imageName>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
         <spring-cloud-services.version>3.3.0</spring-cloud-services.version>
     </properties>
