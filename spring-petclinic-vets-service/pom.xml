@@ -22,8 +22,7 @@
 
 		<spring-boot.version>2.6.3</spring-boot.version>
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
-        <spring-cloud-services.version>3.3.0</spring-cloud-services.version>
-		<wavefront.version>2.2.2</wavefront.version>
+		<spring-cloud-services.version>3.3.0</spring-cloud-services.version>
 
 		<maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
 
@@ -35,10 +34,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wavefront</groupId>
-			<artifactId>wavefront-spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
@@ -78,10 +73,10 @@
 		</dependency>
 
 		<!-- Spring Cloud -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -146,15 +141,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>com.wavefront</groupId>
-				<artifactId>wavefront-spring-boot-bom</artifactId>
-				<version>${wavefront.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -178,9 +164,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-                  <layers>
-                    <enabled>true</enabled>
-                  </layers>
+				  <layers>
+					<enabled>true</enabled>
+				  </layers>
 				</configuration>
 				<executions>
 					<execution>
@@ -203,79 +189,12 @@
 		</plugins>
 	</build>
 
-
 	<profiles>
 		<profile>
-			<id>local</id>
-			<dependencies>
-				<!-- Spring Cloud Services -->
-				<dependency>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-					<exclusions>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-netflix-ribbon</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>com.netflix.ribbon</groupId>
-							<artifactId>ribbon-eureka</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-netflix-hystrix</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>cloud</id>
-			<dependencies>
-				<!-- Spring Cloud Services -->
-				<dependency>
-					<groupId>io.pivotal.spring.cloud</groupId>
-					<artifactId>spring-cloud-services-starter-config-client</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>io.pivotal.spring.cloud</groupId>
-					<artifactId>spring-cloud-services-starter-service-registry</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-					<exclusions>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-netflix-ribbon</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>com.netflix.ribbon</groupId>
-							<artifactId>ribbon-eureka</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-netflix-hystrix</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			</dependencies>
-		</profile>
-
-
-		<profile>
 			<id>k8s</id>
-	        <activation>
-	            <activeByDefault>true</activeByDefault>
-	        </activation>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.springframework.cloud</groupId>

@@ -1,9 +1,29 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: namespace-reader
+rules:
+  - apiGroups: ["", "extensions", "apps"]
+    resources: ["configmaps", "pods", "services", "endpoints", "secrets"]
+    verbs: ["get", "list", "watch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: namespace-reader-binding
+subjects:
+  - kind: ServiceAccount
+    name: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: namespace-reader
+  apiGroup: ""
 ---
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: petclinic-config
-  namespace: spring-petclinic
 data:
   application.yaml: |-
     server:
@@ -15,21 +35,23 @@ data:
         enabled: true
         mime-types: application/json,text/css,application/javascript
         min-response-size: 2048
-
-    wavefront:
-      application:
-        name: spring-petclinic-k8s
-      freemium-account: true
-
+    
     # Logging
     logging.level.org.springframework: INFO
-
+    
     # Metrics
     management:
       endpoint:
+        restart:
+          enabled: true
         health:
-          probes:
-            enabled: true
+          enabled: true
+        info:
+          enabled: true
+        env:
+          enabled: true
+        refresh:
+          enabled: true
       health:
         livenessState:
           enabled: true
@@ -49,19 +71,20 @@ data:
         export:
           prometheus:
             enabled: true
-          wavefront:
-            enabled: true
-
-    customers-service-id: http://customers-service.spring-petclinic.svc.cluster.local:8080
-    visits-service-id: http://vists-service.spring-petclinic.svc.cluster.local:8080
-
+    
+    customers-service-id: http://customers-service.default.svc.cluster.local:8080
+    visits-service-id: http://vists-service.default.svc.cluster.local:8080
+    
     spring:
       datasource:
-        schema: classpath*:db/mysql/schema.sql
-        data: classpath*:db/mysql/data.sql
-        platform: mysql
+        url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+        schema: classpath*:db/hsqldb/schema.sql
+        data: classpath*:db/hsqldb/data.sql
+        platform: hsqldb
         initialization-mode: always
-
+        username: sa
+        password:
+    
       jpa:
         show-sql: true
         hibernate:
@@ -71,9 +94,7 @@ data:
         sampler:
           probability: 1.0
         config:
-          # Allow the microservices to override the remote properties with their own System properties or config file
           allow-override: true
-          # Override configuration with any local property source
           override-none: true
       messages:
         basename: messages/messages
@@ -85,28 +106,28 @@ data:
           ribbon:
             enabled: false
         gateway:
-          x-forwarded:  
-            enabled: true 
-            for-enabled: true 
-            proto-enabled: true 
-            host-append: false  
-            port-append: false  
+          x-forwarded:
+            enabled: true
+            for-enabled: true
+            proto-enabled: true
+            host-append: false
+            port-append: false
             proto-append: false
           routes:
             - id: vets-service
-              uri: http://vets-service.spring-petclinic.svc.cluster.local:8080
+              uri: http://vets-service.default.svc.cluster.local:8080
               predicates:
                 - Path=/api/vet/**
               filters:
                 - StripPrefix=2
             - id: visits-service
-              uri: http://visits-service.spring-petclinic.svc.cluster.local:8080
+              uri: http://visits-service.default.svc.cluster.local:8080
               predicates:
                 - Path=/api/visit/**
               filters:
                 - StripPrefix=2
             - id: customers-service
-              uri: http://customers-service.spring-petclinic.svc.cluster.local:8080
+              uri: http://customers-service.default.svc.cluster.local:8080
               predicates:
                 - Path=/api/customer/**
               filters:
@@ -115,4 +136,3 @@ data:
       cache:
         ttl: 60
         heap-size: 101
-
