@@ -33,18 +33,12 @@ spec:
         - image: spring-petclinic-cloud-api-gateway
           name: api-gateway
           imagePullPolicy: Never
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health/liveness
-            initialDelaySeconds: 120
-            periodSeconds: 5
           readinessProbe:
             httpGet:
               port: 8080
               path: /actuator/health/readiness
-            initialDelaySeconds: 20
-            failureThreshold: 20
+            initialDelaySeconds: 60
+            failureThreshold: 100
             periodSeconds: 5
           lifecycle:
             preStop:

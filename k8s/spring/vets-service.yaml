@@ -18,19 +18,6 @@ spec:
         - image: spring-petclinic-cloud-vets-service
           name: vets-service
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health/readiness
-            initialDelaySeconds: 30
-            failureThreshold: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health/liveness
-            initialDelaySeconds: 120
-            periodSeconds: 5
           lifecycle:
             preStop:
               exec:
