@@ -48,6 +48,24 @@ expose() {
     minikube service api-gateway --url
 }
 
+test() {
+  cd measurements
+  k6 run load-test.js
+  cd ..
+}
+
+monitor() {
+  #watch -n 0.5 'kubectl top po'
+  cd ./measurements
+  rm ./log
+  while true
+  do
+      clear
+      kubectl top po | tee -a ./log
+      sleep 1
+  done
+}
+
 $1
 $2
 $3
