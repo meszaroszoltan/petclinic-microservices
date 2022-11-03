@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: org.micronautframework.samples.petclinic.vets
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [annotation-api, app-name, data, data-jpa, discovery-kubernetes, graalvm, h2, http-client, jackson-databind, java, java-application, jdbc-hikari, jib, junit, logback, maven, netty-server, properties, readme, shade, spring, spring-boot, spring-data-jpa, spring-web]
