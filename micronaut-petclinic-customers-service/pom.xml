@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.micronautframework.samples.petclinic.vets</groupId>
-    <artifactId>micronaut-petclinic-vets-service</artifactId>
+    <groupId>org.micronautframework.samples.petclinic.customers</groupId>
+    <artifactId>micronaut-petclinic-customers-service</artifactId>
     <version>0.1</version>
     <packaging>${packaging}</packaging>
 
@@ -20,10 +20,10 @@
         <release.version>17</release.version>
         <micronaut.version>3.7.3</micronaut.version>
         <micronaut.aot.enabled>true</micronaut.aot.enabled>
-        <micronaut.aot.packageName>org.micronautframework.samples.petclinic.vets.aot.generated</micronaut.aot.packageName>
+        <micronaut.aot.packageName>org.micronautframework.samples.petclinic.customers.aot.generated</micronaut.aot.packageName>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.data.version>3.8.1</micronaut.data.version>
-        <exec.mainClass>org.micronautframework.samples.petclinic.vets.Application</exec.mainClass>
+        <exec.mainClass>org.micronautframework.samples.petclinic.customers.Application</exec.mainClass>
     </properties>
 
     <repositories>
@@ -146,8 +146,8 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>-Amicronaut.processing.group=org.micronautframework.samples.petclinic.vets</arg>
-                        <arg>-Amicronaut.processing.module=micronaut-petclinic-vets-service</arg>
+                        <arg>-Amicronaut.processing.group=org.micronautframework.samples.petclinic.customers</arg>
+                        <arg>-Amicronaut.processing.module=micronaut-petclinic-customers-service</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>

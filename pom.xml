@@ -16,13 +16,17 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>spring-petclinic-customers-service</module>
-		<module>spring-petclinic-vets-service</module>
-		<module>spring-petclinic-visits-service</module>
-		<module>spring-petclinic-api-gateway</module>
+        <module>spring-petclinic-api-gateway</module>
 
-        <module>micronaut-petclinic-visits-service</module>
+        <!--Spring-->
+        <module>spring-petclinic-customers-service</module>
+        <module>spring-petclinic-vets-service</module>
+        <module>spring-petclinic-visits-service</module>
+
+        <!--Micronaut-->
+        <module>micronaut-petclinic-customers-service</module>
         <module>micronaut-petclinic-vets-service</module>
+        <module>micronaut-petclinic-visits-service</module>
     </modules>
 
 	<profiles>
