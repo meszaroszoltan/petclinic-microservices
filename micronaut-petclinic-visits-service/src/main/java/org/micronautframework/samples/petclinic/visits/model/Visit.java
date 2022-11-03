@@ -56,7 +56,7 @@ public class Visit {
     public Visit() {
     }
 
-    public Visit(Integer id, Date date, String description, int petId) {
+    public Visit(Date date, String description, int petId) {
         this.id = id;
         this.date = date;
         this.description = description;
