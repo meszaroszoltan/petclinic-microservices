@@ -20,7 +20,9 @@
 		<module>spring-petclinic-vets-service</module>
 		<module>spring-petclinic-visits-service</module>
 		<module>spring-petclinic-api-gateway</module>
-	</modules>
+
+        <module>micronaut-petclinic-visits-service</module>
+    </modules>
 
 	<profiles>
 		<profile>
