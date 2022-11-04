@@ -30,6 +30,7 @@
 
         <!--Quarkus-->
         <module>micronaut-petclinic-vets-service</module>
+        <module>micronaut-petclinic-visits-service</module>
     </modules>
 
 	<profiles>

@@ -112,7 +112,7 @@ function test_visits_service() {
     });
     const post_visit_response = http.post(BASE_URL + `/api/visit/owners/${user_id}/pets/${pet_id}/visits`, body, PAYLOAD_PARAMS)
     check(post_visit_response, {
-        'visits-service: POST one visit': (r) => r.status === 201
+        'visits-service: POST one visit': (r) => r.status === 201 || r.status === 200
     });
     sleep();
 
