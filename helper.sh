@@ -137,6 +137,31 @@ deploy_micro() {
   kubectl get all
 }
 
+# Quarkus
+
+build_quarkus_jvm_vets() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/quarkus-petclininc-vets-service
+  ./mvnw package -DskipTests
+  docker build -f src/main/docker/Dockerfile.jvm -t quarkus/code-with-quarkus-jvm .
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+#build_quarkus_native_vets() {
+#  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/quarkus-petclininc-vets-service
+#  ./mvnw package -Pnative -DskipTests
+#  docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/code-with-quarkus .
+#  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+#}
+
+deploy_quarkus() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+
+  minikube image load quarkus/code-with-quarkus-jvm:latest
+  kubectl replace -f k8s/quarkus/vets-service.yaml --force
+
+  kubectl get all
+}
+
 # Testing
 
 test() {

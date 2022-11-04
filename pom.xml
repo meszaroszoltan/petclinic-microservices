@@ -27,6 +27,9 @@
         <module>micronaut-petclinic-customers-service</module>
         <module>micronaut-petclinic-vets-service</module>
         <module>micronaut-petclinic-visits-service</module>
+
+        <!--Quarkus-->
+        <module>micronaut-petclinic-vets-service</module>
     </modules>
 
 	<profiles>
