@@ -110,4 +110,17 @@ public class Owner {
         getPetsInternal().add(pet);
         pet.setOwner(this);
     }
+
+    public Owner() {
+    }
+
+    public Owner(Integer id, String firstName, String lastName, String address, String city, String telephone, Set<Pet> pets) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.telephone = telephone;
+        this.pets = pets;
+    }
 }

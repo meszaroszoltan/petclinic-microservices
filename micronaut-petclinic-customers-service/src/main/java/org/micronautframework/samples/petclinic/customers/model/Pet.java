@@ -24,8 +24,7 @@ public class Pet {
     private String name;
 
     @Column(name = "birth_date")
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    private String birthDate;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -52,11 +51,11 @@ public class Pet {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(final Date birthDate) {
+    public void setBirthDate(final String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -73,6 +72,17 @@ public class Pet {
     }
 
     public void setOwner(final Owner owner) {
+        this.owner = owner;
+    }
+
+    public Pet() {
+    }
+
+    public Pet(Integer id, String name, String birthDate, PetType type, Owner owner) {
+        this.id = id;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.type = type;
         this.owner = owner;
     }
 }

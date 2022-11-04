@@ -14,7 +14,9 @@ import org.micronautframework.samples.petclinic.customers.model.OwnerRepository;
 import org.micronautframework.samples.petclinic.customers.model.Pet;
 import org.micronautframework.samples.petclinic.customers.model.PetRepository;
 import org.micronautframework.samples.petclinic.customers.model.PetType;
+import org.micronautframework.samples.petclinic.customers.model.PetTypeRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +24,23 @@ import java.util.Optional;
 class PetResource {
     private final PetRepository petRepository;
     private final OwnerRepository ownerRepository;
+    private final PetTypeRepository petTypeRepository;
 
-    public PetResource(PetRepository petRepository, OwnerRepository ownerRepository) {
+    public PetResource(PetRepository petRepository, OwnerRepository ownerRepository, PetTypeRepository petTypeRepository) {
         this.petRepository = petRepository;
         this.ownerRepository = ownerRepository;
+        this.petTypeRepository = petTypeRepository;
 
-        // TODO create entities
+        var owner = new Owner(null, "first", "last", "addr", "city", "123" , Collections.emptySet());
+        var type = new PetType(null, "cat");
+        var pet = new Pet(null, "name", "new Date()", type, owner);
+
+        ownerRepository.save(owner);
+        petTypeRepository.save(type);
+        petRepository.save(pet);
+        for (Owner owner1 : ownerRepository.findAll()) {
+            System.out.println(owner1);
+        }
     }
 
     @Get("/petTypes")
@@ -38,8 +51,8 @@ class PetResource {
     @Post("/owners/{ownerId}/pets")
     public HttpMessage<Pet> processCreationForm(
         @Body PetRequest petRequest,
-        @PathVariable("ownerId") long ownerId) {
-
+        @PathVariable("ownerId") int ownerId
+    ) {
         final Pet pet = new Pet();
         final Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
         Owner owner = optionalOwner.orElseThrow(() -> new RuntimeException("Owner " + ownerId + " not found"));
@@ -48,11 +61,15 @@ class PetResource {
         return HttpResponse.status(HttpStatus.CREATED).body(save(pet, petRequest));
     }
 
-    @Put("/owners/*/pets/*")
-    public HttpMessage<Object> processUpdateForm(@Body PetRequest petRequest) {
-        int petId = petRequest.getId();
+    @Put("/owners/{ownerId}/pets/{petId}")
+    public HttpMessage<Object> processUpdateForm(
+        @PathVariable("ownerId") int ownerId,
+        @PathVariable("petId") int petId,
+        @Body PetRequest petRequest
+    ) {
         Pet pet = findPetById(petId);
-        save(pet, petRequest);
+        pet.setName(petRequest.getName());
+        pet.setBirthDate(petRequest.getBirthDate());
         return HttpResponse.status(HttpStatus.NO_CONTENT);
     }
 
@@ -67,13 +84,13 @@ class PetResource {
         return petRepository.save(pet);
     }
 
-    @Get("owners/*/pets/{petId}")
-    public PetDetails findPet(@PathVariable("petId") int petId) {
+    @Get("owners/{ownerId}/pets/{petId}")
+    public PetDetails findPet(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId) {
         return new PetDetails(findPetById(petId));
     }
 
 
-    private Pet findPetById(long petId) {
+    private Pet findPetById(int petId) {
         Optional<Pet> pet = petRepository.findById(petId);
         if (pet.isEmpty()) {
             throw new RuntimeException("Pet " + petId + " not found");

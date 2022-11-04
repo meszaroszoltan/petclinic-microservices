@@ -1,27 +1,36 @@
 package org.micronautframework.samples.petclinic.customers.web;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
+@Entity
 public class PetRequest {
-    private int id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date birthDate;
-
-    @Size(min = 1)
-    private String name;
-
-    private int typeId;
-
-    public PetRequest(int id, Date birthDate, String name, int typeId) {
+    public PetRequest(int id, String birthDate, String name, int typeId) {
         this.id = id;
         this.birthDate = birthDate;
         this.name = name;
         this.typeId = typeId;
     }
+
+    public PetRequest() {
+        ;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+
+    private String birthDate;
+
+    @Size(min = 1)
+    private String name;
+
+    private int typeId;
 
     public int getId() {
         return id;
@@ -31,11 +40,11 @@ public class PetRequest {
         this.id = id;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

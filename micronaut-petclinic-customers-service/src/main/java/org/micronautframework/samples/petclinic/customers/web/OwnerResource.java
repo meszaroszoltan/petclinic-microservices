@@ -1,5 +1,6 @@
 package org.micronautframework.samples.petclinic.customers.web;
 
+import io.micronaut.context.annotation.Bean;
 import io.micronaut.http.HttpMessage;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -22,7 +23,6 @@ class OwnerResource {
 
     public OwnerResource(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
-        // TODO create entities
     }
 
     @Post
@@ -32,7 +32,7 @@ class OwnerResource {
     }
 
     @Get(value = "/{ownerId}")
-    public Optional<Owner> findOwner(@PathVariable("ownerId") long ownerId) {
+    public Optional<Owner> findOwner(@PathVariable("ownerId") int ownerId) {
         return ownerRepository.findById(ownerId);
     }
 
@@ -42,7 +42,7 @@ class OwnerResource {
     }
 
     @Put(value = "/{ownerId}")
-    public HttpMessage<Object> updateOwner(@PathVariable("ownerId") long ownerId, @Valid @Body Owner ownerRequest) {
+    public HttpMessage<Object> updateOwner(@PathVariable("ownerId") int ownerId, @Valid @Body Owner ownerRequest) {
         final Optional<Owner> owner = ownerRepository.findById(ownerId);
 
         final Owner ownerModel = owner.orElseThrow(() -> new RuntimeException("Owner " + ownerId + " not found"));
@@ -53,7 +53,6 @@ class OwnerResource {
         ownerModel.setAddress(ownerRequest.getAddress());
         ownerModel.setTelephone(ownerRequest.getTelephone());
 
-        var saved = ownerRepository.save(ownerModel);
         return HttpResponse.status(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: visits-service
+  name: visits-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visits-service
+  template:
+    metadata:
+      labels:
+        app: visits-service
+    spec:
+      containers:
+        - image: micronaut-petclinic-visits-service
+          name: visits-service
+          imagePullPolicy: Never
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 10"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernetes
+          envFrom:
+            - configMapRef:
+                name: micronaut-petclinic-config
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always

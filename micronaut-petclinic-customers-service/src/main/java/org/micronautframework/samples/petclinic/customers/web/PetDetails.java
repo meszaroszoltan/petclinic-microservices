@@ -4,20 +4,18 @@ package org.micronautframework.samples.petclinic.customers.web;
 import org.micronautframework.samples.petclinic.customers.model.Pet;
 import org.micronautframework.samples.petclinic.customers.model.PetType;
 
-import java.util.Date;
-
 /**
  * @author mszarlinski@bravurasolutions.com on 2016-12-05.
  */
 class PetDetails {
 
-    private long id;
+    private int id;
 
     private String name;
 
     private String owner;
 
-    private Date birthDate;
+    private String birthDate;
 
     private PetType type;
 
@@ -29,11 +27,14 @@ class PetDetails {
         this.type = pet.getType();
     }
 
-    public long getId() {
+    public PetDetails() {
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,11 +54,11 @@ class PetDetails {
         this.owner = owner;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

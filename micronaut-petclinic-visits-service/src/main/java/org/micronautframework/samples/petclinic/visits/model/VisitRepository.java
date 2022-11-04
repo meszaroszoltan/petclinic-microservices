@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface VisitRepository extends CrudRepository<Visit, Long> {
+public interface VisitRepository extends CrudRepository<Visit, Integer> {
     @Executable
     List<Visit> findByPetId(int petId);
 

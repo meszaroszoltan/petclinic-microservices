@@ -73,7 +73,6 @@ function test_customers_service() {
 
     // POST pet
     body = JSON.stringify({
-        'id': 0,
         'name': 'Cat' + __ITER,
         'birthDate':  (new Date()).toISOString(),
         'typeId': '1'

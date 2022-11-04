@@ -1,52 +1,143 @@
 #!/usr/bin/env bash
 
-spring_build_api() {
+# Infra
+setup() {
+  build_infra
+  deploy_infra
+  expose
+}
+
+build_infra() {
   cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-api-gateway
   ./mvnw spring-boot:build-image -DskipTests
   minikube image load spring-petclinic-cloud-api-gateway
   cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
 }
 
-spring_build_visits() {
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-visits-service
-  ./mvnw spring-boot:build-image -DskipTests
-  minikube image load spring-petclinic-cloud-visits-service
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
-}
-
-spring_build_vets() {
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-vets-service
-  ./mvnw spring-boot:build-image -DskipTests
-  minikube image load spring-petclinic-cloud-vets-service
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
-}
-
-spring_build_customers() {
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-customers-service
-  ./mvnw spring-boot:build-image -DskipTests
-  minikube image load spring-petclinic-cloud-customers-service
-  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
-}
-
-spring_build() {
-  spring_build_api
-  spring_build_visits
-  spring_build_vets
-  spring_build_customers
-}
-
-spring_deploy() {
+deploy_infra() {
   cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
   kubectl replace -f k8s --force
-  kubectl replace -f k8s/spring/vets-service.yaml --force
-  kubectl replace -f k8s/spring/visits-service.yaml --force
-  kubectl replace -f k8s/spring/customers-service.yaml --force
-  kubectl get all
+  kubectl replace -f k8s/spring/spring-petclinic-config.yaml --force
 }
 
 expose() {
-    minikube service api-gateway --url
+  minikube service api-gateway --url
 }
+
+# Spring
+
+build_spring() {
+  build_spring_visits
+  build_spring_customers
+  build_spring_vets
+}
+
+build_spring_visits() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-visits-service
+  ./mvnw spring-boot:build-image -DskipTests
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_spring_customers() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-customers-service
+  ./mvnw spring-boot:build-image -DskipTests
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_spring_vets() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/spring-petclinic-vets-service
+  ./mvnw spring-boot:build-image -DskipTests
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+deploy_spring() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+
+  minikube image load spring-petclinic-cloud-visits-service:latest
+  minikube image load spring-petclinic-cloud-customers-service:latest
+  minikube image load spring-petclinic-cloud-vets-service:latest
+
+  kubectl replace -f k8s/spring/vets-service.yaml --force
+  kubectl replace -f k8s/spring/visits-service.yaml --force
+  kubectl replace -f k8s/spring/customers-service.yaml --force
+
+  kubectl get all
+}
+
+# Micronaut
+
+build_micro_jvm() {
+  build_micro_jvm_visits
+  build_micro_jvm_vets
+  build_micro_jvm_customers
+}
+
+build_micro_native() {
+  build_micro_native_visits
+  build_micro_native_vets
+  build_micro_native_customers
+}
+
+build_micro_jvm_visits() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-visits-service
+  ./mvnw package -Dpackaging=docker
+   cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_micro_jvm_vets() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-vets-service
+  ./mvnw package -Dpackaging=docker
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_micro_jvm_customers() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-customers-service
+  ./mvnw package -Dpackaging=docker
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_micro_native_visits() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-visits-service
+  ./mvnw package -Dmicronaut.aot.enabled=true -Dpackaging=docker-native
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_micro_native_vets() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-vets-service
+  ./mvnw package -Dmicronaut.aot.enabled=true -Dpackaging=docker-native
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+build_micro_native_customers() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/micronaut-petclinic-customers-service
+  ./mvnw package -Dmicronaut.aot.enabled=true -Dpackaging=docker-native
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
+
+deploy_micro_jvm() {
+  deploy_micro
+}
+
+deploy_micro_native() {
+  deploy_micro
+}
+
+deploy_micro() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+
+  minikube image load micronaut-petclinic-visits-service:latest
+  minikube image load micronaut-petclinic-customers-service:latest
+  minikube image load micronaut-petclinic-vets-service:latest
+
+  kubectl replace -f k8s/micronaut/vets-service.yaml --force
+  kubectl replace -f k8s/micronaut/visits-service.yaml --force
+  kubectl replace -f k8s/micronaut/customers-service.yaml --force
+  kubectl replace -f k8s/micronaut/micronaut-petclinic-config.yaml --force
+
+  kubectl get all
+}
+
+# Testing
 
 test() {
   cd measurements

@@ -28,4 +28,12 @@ public class PetType {
     public String getName() {
         return this.name;
     }
+
+    public PetType(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public PetType() {
+    }
 }

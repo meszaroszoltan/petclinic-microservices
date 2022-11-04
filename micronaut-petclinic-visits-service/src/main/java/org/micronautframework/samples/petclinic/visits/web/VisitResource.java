@@ -32,9 +32,10 @@ public class VisitResource {
         ));
     }
 
-    @Post("owners/*/pets/{petId}/visits")
+    @Post("owners/{ownerId}/pets/{petId}/visits")
     HttpMessage<Visit> create(
         @Valid @Body Visit visit,
+        @PathVariable("ownerId") int ownerId,
         @PathVariable("petId") int petId
     ) {
         visit.setPetId(petId);
@@ -42,8 +43,11 @@ public class VisitResource {
         return HttpResponse.status(HttpStatus.CREATED).body(created);
     }
 
-    @Get("owners/*/pets/{petId}/visits")
-    List<Visit> visits(@PathVariable("petId") int petId) {
+    @Get("owners/{ownerId}/pets/{petId}/visits")
+    List<Visit> visits(
+        @PathVariable("ownerId") int ownerId,
+        @PathVariable("petId") int petId
+    ) {
         return visitRepository.findByPetId(petId);
     }
 

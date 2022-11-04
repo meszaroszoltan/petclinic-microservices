@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface PetRepository extends CrudRepository<Pet, Long> {
+public interface PetRepository extends CrudRepository<Pet, Integer> {
     @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
     List<PetType> findPetTypes();
 
