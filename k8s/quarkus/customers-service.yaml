@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: customers-service
+  name: customers-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customers-service
+  template:
+    metadata:
+      labels:
+        app: customers-service
+    spec:
+      containers:
+      - image: quarkus/quarkus-petclinic-customers-service-jvm
+        name: customers-service
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        ports:
+          - containerPort: 8080
+      restartPolicy: Always

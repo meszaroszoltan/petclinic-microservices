@@ -142,7 +142,7 @@ deploy_micro() {
 build_micro_jvm() {
   build_quarkus_jvm_vets
   build_quarkus_jvm_visits
-
+  build_quarkus_jvm_customers
 }
 
 build_quarkus_jvm_vets() {
@@ -159,6 +159,12 @@ build_quarkus_jvm_visits() {
   cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
 }
 
+build_quarkus_jvm_customers() {
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/quarkus-petclininc-customers-service
+  ./mvnw package -DskipTests
+  docker build -f src/main/docker/Dockerfile.jvm -t quarkus/quarkus-petclinic-customers-service-jvm .
+  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/
+}
 
 #build_quarkus_native_vets() {
 #  cd /mnt/c/Users/zolim/IdeaProjects/spring-petclinic-cloud/quarkus-petclininc-vets-service
@@ -172,9 +178,11 @@ deploy_quarkus() {
 
   minikube image load quarkus/quarkus-petclinic-visits-service-jvm:latest
   minikube image load quarkus/quarkus-petclinic-vets-service-jvm:latest
+  minikube image load quarkus/quarkus-petclinic-customers-service-jvm:latest
 
   kubectl replace -f k8s/quarkus/visits-service.yaml --force
   kubectl replace -f k8s/quarkus/vets-service.yaml --force
+  kubectl replace -f k8s/quarkus/customers-service.yaml --force
 
   kubectl get all
 }
@@ -189,14 +197,23 @@ test() {
 
 monitor() {
   #watch -n 0.5 'kubectl top po'
+  read -n 1 -s -r -p "Press any key to continue"
+  echo "The monitoring will terminate after 2 minutes"
+  {
+      sleep 2m
+      kill $$
+  } &
   cd ./measurements
   rm ./log
+  test &
   while true
   do
       clear
       kubectl top po | tee -a ./log
       sleep 1
   done
+  python3 convert.py
+  echo "check the metrics.csv file for the results"
 }
 
 $1

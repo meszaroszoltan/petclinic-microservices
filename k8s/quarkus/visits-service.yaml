@@ -18,20 +18,10 @@ spec:
         - image: quarkus/quarkus-petclinic-visits-service-jvm:latest
           name: vets-service
           imagePullPolicy: Never
-          lifecycle:
-            preStop:
-              exec:
-                command: ["sh", "-c", "sleep 10"]
           resources:
             requests:
               cpu: 500m
               memory: 512Mi
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: kubernetes
-#          envFrom:
-#            - configMapRef:
-#                name: micronaut-petclinic-config
           ports:
             - containerPort: 8080
       restartPolicy: Always
