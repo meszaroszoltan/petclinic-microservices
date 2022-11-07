@@ -141,7 +141,7 @@ deploy_micro() {
 
 # Quarkus
 
-build_micro_jvm() {
+build_quarkus_jvm() {
   build_quarkus_jvm_vets
   build_quarkus_jvm_visits
   build_quarkus_jvm_customers
