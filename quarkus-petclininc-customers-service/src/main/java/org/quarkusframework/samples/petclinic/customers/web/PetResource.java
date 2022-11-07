@@ -1,6 +1,7 @@
 package org.quarkusframework.samples.petclinic.customers.web;
 
 
+import io.quarkus.runtime.Startup;
 import org.quarkusframework.samples.petclinic.customers.models.PetType;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.List;
 
+@Startup
 @Path("")
 @Transactional
 public class PetResource {

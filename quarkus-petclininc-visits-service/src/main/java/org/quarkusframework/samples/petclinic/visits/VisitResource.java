@@ -16,6 +16,8 @@
 package org.quarkusframework.samples.petclinic.visits;
 
 
+import io.quarkus.runtime.Startup;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -28,7 +30,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-
+@Startup
 @Path("/")
 @Transactional
 public class VisitResource {

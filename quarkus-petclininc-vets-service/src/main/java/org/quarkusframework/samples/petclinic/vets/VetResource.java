@@ -1,5 +1,7 @@
 package org.quarkusframework.samples.petclinic.vets;
 
+import io.quarkus.runtime.Startup;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -7,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.List;;
 
+@Startup
 @Path("/vets")
 public class VetResource {
 

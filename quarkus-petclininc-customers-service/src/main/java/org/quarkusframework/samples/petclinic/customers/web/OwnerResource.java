@@ -1,5 +1,6 @@
 package org.quarkusframework.samples.petclinic.customers.web;
 
+import io.quarkus.runtime.Startup;
 import org.quarkusframework.samples.petclinic.customers.models.Owner;
 import org.quarkusframework.samples.petclinic.customers.models.Pet;
 
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
+@Startup
 @Path("/owners")
 @Transactional
 public class OwnerResource {
