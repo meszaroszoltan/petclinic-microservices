@@ -18,8 +18,8 @@ build_infra() {
 
 deploy_infra() {
   cd $ROOT/
-  kubectl replace -f k8s --force
-  kubectl replace -f k8s/spring/spring-petclinic-config.yaml --force
+  minikube kubectl -- replace -f k8s --force
+  minikube kubectl -- replace -f k8s/spring/spring-petclinic-config.yaml --force
 }
 
 expose() {
@@ -59,11 +59,11 @@ deploy_spring() {
   minikube image load spring-petclinic-cloud-customers-service:latest
   minikube image load spring-petclinic-cloud-vets-service:latest
 
-  kubectl replace -f k8s/spring/vets-service.yaml --force
-  kubectl replace -f k8s/spring/visits-service.yaml --force
-  kubectl replace -f k8s/spring/customers-service.yaml --force
+  minikube kubectl -- replace -f k8s/spring/vets-service.yaml --force
+  minikube kubectl -- replace -f k8s/spring/visits-service.yaml --force
+  minikube kubectl -- replace -f k8s/spring/customers-service.yaml --force
 
-  kubectl get all
+  minikube kubectl -- get all
 }
 
 # Micronaut
@@ -131,12 +131,12 @@ deploy_micro() {
   minikube image load micronaut-petclinic-customers-service:latest
   minikube image load micronaut-petclinic-vets-service:latest
 
-  kubectl replace -f k8s/micronaut/vets-service.yaml --force
-  kubectl replace -f k8s/micronaut/visits-service.yaml --force
-  kubectl replace -f k8s/micronaut/customers-service.yaml --force
-  kubectl replace -f k8s/micronaut/micronaut-petclinic-config.yaml --force
+  minikube kubectl -- replace -f k8s/micronaut/vets-service.yaml --force
+  minikube kubectl -- replace -f k8s/micronaut/visits-service.yaml --force
+  minikube kubectl -- replace -f k8s/micronaut/customers-service.yaml --force
+  minikube kubectl -- replace -f k8s/micronaut/micronaut-petclinic-config.yaml --force
 
-  kubectl get all
+  minikube kubectl -- get all
 }
 
 # Quarkus
@@ -182,11 +182,11 @@ deploy_quarkus() {
   minikube image load quarkus/quarkus-petclinic-vets-service-jvm:latest
   minikube image load quarkus/quarkus-petclinic-customers-service-jvm:latest
 
-  kubectl replace -f k8s/quarkus/visits-service.yaml --force
-  kubectl replace -f k8s/quarkus/vets-service.yaml --force
-  kubectl replace -f k8s/quarkus/customers-service.yaml --force
+  minikube kubectl -- replace -f k8s/quarkus/visits-service.yaml --force
+  minikube kubectl -- replace -f k8s/quarkus/vets-service.yaml --force
+  minikube kubectl -- replace -f k8s/quarkus/customers-service.yaml --force
 
-  kubectl get all
+  minikube kubectl -- get all
 }
 
 # Testing
@@ -198,24 +198,17 @@ test() {
 }
 
 monitor() {
-  #watch -n 0.5 'kubectl top po'
+  #watch -n 0.5 'minikube kubectl -- top po'
   read -n 1 -s -r -p "Press any key to continue"
-  echo "The monitoring will terminate after 2 minutes"
-  {
-      sleep 2m
-      kill $$
-  } &
-  cd ./measurements
-  rm ./log
-  test &
+  rm ./measurements/log
   while true
   do
       clear
-      kubectl top po | tee -a ./log
+      minikube kubectl -- top po | tee -a ./log
       sleep 1
   done
-  python3 convert.py
-  echo "check the metrics.csv file for the results"
+  #python3 convert.py
+  #echo "check the metrics.csv file for the results"
 }
 
 $1
